@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">PulseIT</string>
+    <string name="titulo_elige_tema"> Elige un tema</string>
+    <string name="subtitulo_elige_tema"> ¿Qué desafío quieres jugar hoy?</string>
+    <string name="animales_elige_tema"> Animales</string>
+    <string name="colores_elige_tema"> Colores</string>
+    <string name="numeros_elige_tema"> Números</string>
 </resources>
