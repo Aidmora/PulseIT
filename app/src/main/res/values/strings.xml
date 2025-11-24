@@ -5,4 +5,16 @@
     <string name="animales_elige_tema"> Animales</string>
     <string name="colores_elige_tema"> Colores</string>
     <string name="numeros_elige_tema"> Números</string>
+    <string name="titulo_configura_partida"> Configura tu partida</string>
+    <string name="subtitulo_configura_partida"> Temática: Animales</string>
+    <string name="configura_partida_dificultad"> Dificultad</string>
+    <string name="configura_partida_idioma"> Idioma</string>
+    <string name="tipo_dificultad_uno"> Fácil</string>
+    <string name="tipo_dificultad_dos"> Medio</string>
+    <string name="tipo_dificultad_tres"> Dificil</string>
+    <string name="tipo_idioma_uno"> Español</string>
+    <string name="tipo_idioma_dos"> Inglés</string>
+    <string name="btn_empezarjuego"> Empezar juego</string>
+    <string name="btn_volver_modos"> Volver a modos</string>
+    <string name="btn_volver_inicio"> Volver al inicio</string>
 </resources>

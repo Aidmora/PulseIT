@@ -168,7 +168,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Volver al inicio"
+            android:text="@string/btn_volver_inicio"
             android:textColor="#3F3A3A"
             android:textSize="14sp"
             android:textStyle="bold" />
