@@ -1,20 +1,39 @@
-package com.mora.ariel.pulseit
+package com.mora.ariel.pulseit // Asegúrate de que este sea tu paquete correcto
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class LoginActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_login)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+        // --- Lógica de Navegación ---
+
+        val btnInvitado = findViewById<TextView>(R.id.btnInvitado)
+        btnInvitado.setOnClickListener {
+            val intent = Intent(this, EleccionTemaActivity::class.java)
+            startActivity(intent)
+        }
+
+        val tvRegistrarse = findViewById<TextView>(R.id.tvRegistrarse)
+        tvRegistrarse.setOnClickListener {
+
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+
+        val btnLogin = findViewById<TextView>(R.id.btnLogin)
+        btnLogin.setOnClickListener {
+
+            val intent = Intent(this, EleccionTemaActivity::class.java)
+
+            // Limpiamos el historial para que el usuario no pueda volver al login con el botón "atrás"
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
     }
 }

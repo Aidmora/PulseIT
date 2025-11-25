@@ -1,20 +1,30 @@
-package com.mora.ariel.pulseit
+package com.mora.ariel.pulseit // Asegúrate de que este sea tu paquete correcto
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class EleccionTemaActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_eleccion_tema)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+
+
+        val cardAnimales = findViewById<LinearLayout>(R.id.cardAnimales)
+        cardAnimales.setOnClickListener {
+            val intent = Intent(this, ConfiguracionPartidaActivity::class.java)
+            startActivity(intent)
+        }
+
+        val btnVolver = findViewById<LinearLayout>(R.id.btnVolver)
+        btnVolver.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(intent)
+            finish()
         }
     }
 }
