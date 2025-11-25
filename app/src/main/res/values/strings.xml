@@ -17,4 +17,22 @@
     <string name="btn_empezarjuego"> Empezar juego</string>
     <string name="btn_volver_modos"> Volver a modos</string>
     <string name="btn_volver_inicio"> Volver al inicio</string>
+    <string name="slogan">Aprendizaje háptico–visual para niños</string>
+    <string name="usuario">Usuario</string>
+    <string name="usuario_placeholder">Pedro Pérez</string>
+    <string name="password">Contraseña</string>
+    <string name="password_placeholder">***********</string>
+    <string name="forget_password">¿Olvidaste tu contraseña?</string>
+    <string name="login">Iniciar Sesión</string>
+    <string name="no_cuenta">¿No tienes cuenta?</string>
+    <string name="btn_registrarse">Registrarse</string>
+    <string name="btn_invitado">Jugar como invitado</string>
+    <string name="cuenta">¿Ya tienes una cuenta?  </string>
+    <string name="configuracion">Configuración</string>
+    <string name="personaliza_experiencia">Personaliza tu experiencia de juego</string>
+    <string name="guardar">Guardar</string>
+    <string name="volver">Volver</string>
+    <string name="modo_color">Modo de color</string>
+    <string name="claro">Claro</string>
+    <string name="oscuro">Oscuro</string>
 </resources>
