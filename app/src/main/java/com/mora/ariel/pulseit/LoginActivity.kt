@@ -21,7 +21,9 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         val btnLogin = findViewById<Button>(R.id.btnLogin)
+        val btnGuess = findViewById<Button>(R.id.btnGuess)
         btnLogin.setOnClickListener { signInWithGoogle() }
+        btnGuess.setOnClickListener { signInAsGuest() }
         auth = FirebaseAuth.getInstance()
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -31,6 +33,27 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
     }
+
+    private fun signInAsGuest() {
+        auth.signInAnonymously()
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    // user.uid exists
+                    // user.isAnonymous == true
+
+                    goToMain()
+                } else {
+                    task.exception?.printStackTrace()
+                }
+            }
+    }
+
+    private fun goToMain() {
+        startActivity(Intent(this, EleccionTemaActivity::class.java))
+        finish()
+    }
+
     private val signInLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
