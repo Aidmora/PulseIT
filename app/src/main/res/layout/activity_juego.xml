@@ -1,403 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_pulseit_degradado"
-    android:fillViewport="true">
+    android:background="@drawable/bg_juego">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <!-- GAME CARD -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardGame"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="24dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="#22FFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/cardPlayerInfo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- 3x3 MATRIX -->
+        <GridLayout
+            android:id="@+id/gameGrid"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:columnCount="3"
+            android:layout_marginTop="190dp"
+            android:padding="16dp"
+            android:rowCount="3">
+
+
+            <!-- 9 CELLS -->
+
+            <FrameLayout
+                android:id="@+id/cell_0"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_rowWeight="1"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                android:background="@android:color/transparent" />
+
+            <FrameLayout
+                android:id="@+id/cell_1"
+                style="@style/GameCell" />
+
+            <FrameLayout
+                android:id="@+id/cell_2"
+                style="@style/GameCell" />
+
+            <FrameLayout
+                android:id="@+id/cell_3"
+                style="@style/GameCell"
+                android:layout_height="15dp" />
+
+            <FrameLayout
+                android:id="@+id/cell_4"
+                style="@style/GameCell" />
+
+            <FrameLayout
+                android:id="@+id/cell_5"
+                style="@style/GameCell" />
+
+            <FrameLayout
+                android:id="@+id/cell_6"
+                style="@style/GameCell"
+                android:layout_height="wrap_content" />
+
+            <FrameLayout
+                android:id="@+id/cell_7"
+                style="@style/GameCell" />
+
+            <FrameLayout
+                android:id="@+id/cell_8"
+                style="@style/GameCell" />
+
+        </GridLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- PLAYER INFO BAR (BOTTOM FIXED) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardPlayerInfo"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="24dp">
+        android:layout_margin="16dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="6dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Título -->
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="PULSE IT"
-            android:textColor="#2D3748"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="12dp">
 
-        <!-- Subtítulo -->
-        <TextView
-            android:id="@+id/tvEdition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Edición Animal"
-            android:textColor="#718096"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_user"
+                app:tint="#64B5F6" />
 
-        <!-- Barra de información del jugador -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardPlayerInfo"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:cardBackgroundColor="#FFFFFF"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="4dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvEdition">
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvPlayerName"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="12dp">
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:text="Jugador 1"
+                android:textColor="#2D3748"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
-                <!-- Icono de usuario -->
-                <ImageView
-                    android:id="@+id/imgUserIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="Usuario"
-                    android:src="@drawable/ic_user"
-                    app:tint="#64B5F6" />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_bar_chart"
+                app:tint="#FFA726" />
 
-                <!-- Nombre del jugador -->
-                <TextView
-                    android:id="@+id/tvPlayerName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_weight="1"
-                    android:text="Jugador 1"
-                    android:textColor="#2D3748"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <!-- Icono de nivel -->
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="12dp"
-                    android:contentDescription="Nivel"
-                    android:src="@drawable/ic_bar_chart"
-                    app:tint="#FFA726" />
-
-                <!-- Nivel -->
-                <TextView
-                    android:id="@+id/tvLevel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="Nivel 5"
-                    android:textColor="#2D3748"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <!-- Icono de estrella -->
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="12dp"
-                    android:contentDescription="Puntos"
-                    android:src="@drawable/ic_star"
-                    app:tint="#FFB300" />
-
-                <!-- Puntos -->
-                <TextView
-                    android:id="@+id/tvScore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:text="1250"
-                    android:textColor="#2D3748"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Card del juego -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardGame"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardPlayerInfo">
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/tvLevel"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="24dp">
+                android:layout_height="match_parent"
+                android:layout_marginStart="4dp"
+                android:text="Nivel 5"
+                android:textColor="#2D3748"
+                android:textStyle="bold" />
 
-                <!-- Grid de animales (3x3) -->
-                <GridLayout
-                    android:id="@+id/gridAnimals"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:columnCount="3"
-                    android:rowCount="3">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="12dp"
+                android:src="@drawable/ic_star"
+                app:tint="#FFB300" />
 
-                    <!-- Fila 1 -->
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="90dp"
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="6dp">
+            <TextView
+                android:id="@+id/tvScore"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="4dp"
+                android:text="1250"
+                android:textColor="#2D3748"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/card1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:cardBackgroundColor="#FFE0E7"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="2dp">
+    </androidx.cardview.widget.CardView>
 
-                            <TextView
-                                android:id="@+id/emoji1"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:text="🦁"
-                                android:textSize="40sp" />
-                        </androidx.cardview.widget.CardView>
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="90dp"
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="6dp">
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/card2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:cardBackgroundColor="#F5F5F5"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="2dp">
-
-                            <TextView
-                                android:id="@+id/emoji2"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:text="🐸"
-                                android:textSize="40sp" />
-                        </androidx.cardview.widget.CardView>
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="90dp"
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="6dp">
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/card3"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:cardBackgroundColor="#F5F5F5"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="2dp">
-
-                            <TextView
-                                android:id="@+id/emoji3"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:text="🐼"
-                                android:textSize="40sp" />
-                        </androidx.cardview.widget.CardView>
-                    </FrameLayout>
-
-                    <!-- Fila 2 -->
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="90dp"
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="6dp">
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/card4"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:cardBackgroundColor="#FFE0E7"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="2dp">
-
-                            <TextView
-                                android:id="@+id/emoji4"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:text="🦊"
-                                android:textSize="40sp" />
-                        </androidx.cardview.widget.CardView>
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="90dp"
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="6dp">
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/card5"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:cardBackgroundColor="#F5F5F5"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="2dp">
-
-                            <TextView
-                                android:id="@+id/emoji5"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:text="🐨"
-                                android:textSize="40sp" />
-                        </androidx.cardview.widget.CardView>
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="90dp"
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="6dp">
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/card6"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:cardBackgroundColor="#F5F5F5"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="2dp">
-
-                            <TextView
-                                android:id="@+id/emoji6"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:text="🐯"
-                                android:textSize="40sp" />
-                        </androidx.cardview.widget.CardView>
-                    </FrameLayout>
-
-                    <!-- Fila 3 -->
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="90dp"
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="6dp">
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/card7"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:cardBackgroundColor="#FFE0E7"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="2dp">
-
-                            <TextView
-                                android:id="@+id/emoji7"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:text="🐵"
-                                android:textSize="40sp" />
-                        </androidx.cardview.widget.CardView>
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="90dp"
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="6dp">
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/card8"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:cardBackgroundColor="#F5F5F5"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="2dp">
-
-                            <TextView
-                                android:id="@+id/emoji8"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:text="🐱"
-                                android:textSize="40sp" />
-                        </androidx.cardview.widget.CardView>
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="90dp"
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:layout_margin="6dp">
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/card9"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            app:cardBackgroundColor="#F5F5F5"
-                            app:cardCornerRadius="16dp"
-                            app:cardElevation="2dp">
-
-                            <TextView
-                                android:id="@+id/emoji9"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:text="🦒"
-                                android:textSize="40sp" />
-                        </androidx.cardview.widget.CardView>
-                    </FrameLayout>
-
-                </GridLayout>
-
-                <!-- Botón de feedback -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnFeedback"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="24dp"
-                    android:text="¡Correcto!"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:backgroundTint="#48BB78"
-                    app:cornerRadius="28dp"
-                    app:icon="@drawable/ic_check"
-                    app:iconGravity="textStart"
-                    app:iconTint="#FFFFFF" />
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

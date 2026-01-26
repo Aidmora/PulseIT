@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "815690800009",
+    "project_id": "pulseit-28dd7",
+    "storage_bucket": "pulseit-28dd7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815690800009:android:fa55c8784085509283df58",
+        "android_client_info": {
+          "package_name": "com.mora.ariel.pulseit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815690800009-g4va1qefbf9q2pvdd3uarnujat3pnd69.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCi-c9rVf_xsN_5P7RRRQz0HdBLQw8dSv0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "815690800009-g4va1qefbf9q2pvdd3uarnujat3pnd69.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

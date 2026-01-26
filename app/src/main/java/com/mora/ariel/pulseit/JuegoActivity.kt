@@ -14,11 +14,5 @@ class JuegoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_juego)
 
-        val btnCorrecto = findViewById<MaterialButton>(R.id.btnFeedback)
-
-        btnCorrecto.setOnClickListener {
-            val intent = Intent(this, ResultadosActivity::class.java)
-            startActivity(intent)
-        }
     }
 }

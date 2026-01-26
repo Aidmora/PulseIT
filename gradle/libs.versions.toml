@@ -10,6 +10,13 @@ material = "1.13.0"
 activity = "1.12.0"
 constraintlayout = "2.2.1"
 material3 = "1.4.0"
+comAndroidApplicationGradlePlugin = "9.1.0-alpha06"
+comGoogleGmsGoogleServicesGradlePlugin = "4.4.4"
+crashPlugin = "1.1.5"
+googleServices = "4.4.4"
+firebaseBom = "34.8.0"
+firebaseAuthKtx = "23.2.1"
+playServicesAuth = "21.5.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -21,8 +28,16 @@ material = { group = "com.google.android.material", name = "material", version.r
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+com-android-application-gradle-plugin = { group = "com.android.application", name = "com.android.application.gradle.plugin", version.ref = "comAndroidApplicationGradlePlugin" }
+com-google-gms-google-services-gradle-plugin = { group = "com.google.gms.google-services", name = "com.google.gms.google-services.gradle.plugin", version.ref = "comGoogleGmsGoogleServicesGradlePlugin" }
+crash-plugin = { group = "com.google.firebase", name = "crash-plugin", version.ref = "crashPlugin" }
+google-services = { group = "com.google.gms", name = "google-services", version.ref = "googleServices" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
+play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+google-services = { id = "com.google.gms.google-services", version = "4.4.0" }
 
