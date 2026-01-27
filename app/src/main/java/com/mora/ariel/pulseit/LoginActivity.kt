@@ -12,11 +12,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+    private val db = FirebaseFirestore.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -39,6 +44,8 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
+                    saveUserToFirestore(user)
+
                     // user.uid exists
                     // user.isAnonymous == true
 
@@ -49,6 +56,32 @@ class LoginActivity : AppCompatActivity() {
             }
     }
 
+    private fun saveUserToFirestore(user: FirebaseUser?) {
+        if (user == null) return
+
+        val userRef = db.collection("users").document(user.uid)
+        //Campos a capturar
+        val userData = hashMapOf(
+            "uid" to user.uid,
+            "nombre" to (user.displayName ?: "Invitado"),
+            "email" to (user.email ?: "N/A"),
+            "fotoUrl" to (user.photoUrl?.toString() ?: ""),
+            "tipoCuenta" to if (user.isAnonymous) "invitado" else "google",
+            "fechaRegistro" to com.google.firebase.Timestamp.now()
+        )
+
+             SetOptions.merge()  //Si el usuario ya existe
+        // actualiza los datos de perfil pero no borra sus puntajes previos
+        userRef.set(userData, SetOptions.merge())
+            .addOnSuccessListener {
+                goToMain()
+            }
+            .addOnFailureListener { e ->
+                e.printStackTrace()
+                // Aunque falle el guardado en DB, podrías dejarlo pasar al juego
+                goToMain()
+            }
+    }
     private fun goToMain() {
         startActivity(Intent(this, EleccionTemaActivity::class.java))
         finish()
@@ -76,6 +109,7 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
+                    saveUserToFirestore(user)
                     // SUCCESS: user.email, user.uid, user.displayName
                 } else {
                     // FAILURE
