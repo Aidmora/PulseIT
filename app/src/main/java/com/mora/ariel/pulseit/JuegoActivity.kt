@@ -43,7 +43,7 @@ class JuegoActivity : AppCompatActivity() {
         theme = intent.getStringExtra(EXTRA_THEME)
         difficulty = intent.getStringExtra(EXTRA_DIFFICULTY)
 
-        // Tiempos más pausados para una experiencia más "suave"
+        // Calibración de ritmo por dificultad
         sequenceDelay = when (difficulty) {
             "easy" -> 1400L
             "hard" -> 800L
@@ -76,13 +76,14 @@ class JuegoActivity : AppCompatActivity() {
 
         cells.forEachIndexed { index, cell ->
             cell.removeAllViews()
-            cell.alpha = 0f
+            cell.alpha = 0f // Invisible al inicio (Memoria)
             cell.background = null
 
             when (theme) {
                 "animals" -> setupAnimalsInCell(index, cell)
                 "numbers" -> setupNumbersInCell(index, cell)
                 "colors" -> setupColorsInCell(index, cell)
+                else -> setupColorsInCell(index, cell)
             }
         }
     }
@@ -113,7 +114,17 @@ class JuegoActivity : AppCompatActivity() {
     }
 
     private fun setupColorsInCell(index: Int, cell: FrameLayout) {
-        // En colores el contorno verde se aplica igual sobre el FrameLayout
+        val colorStrs = listOf(
+            "#EF5350", "#42A5F5", "#66BB6A",
+            "#FFEE58", "#FFA726", "#AB47BC",
+            "#26A69A", "#EC407A", "#78909C"
+        )
+        val gd = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = 45f
+            setColor(Color.parseColor(colorStrs[index % colorStrs.size]))
+        }
+        cell.background = gd
     }
 
     private fun setupClickListeners() {
@@ -136,7 +147,6 @@ class JuegoActivity : AppCompatActivity() {
         lifecycleScope.launch {
             delay(800)
             for (index in gameSequence) {
-                // Color blanco suave para el patrón de la máquina
                 playGameAnimation(index, sequenceDelay - 200, Color.parseColor("#95FFFFFF"))
                 delay(sequenceDelay)
             }
@@ -147,7 +157,6 @@ class JuegoActivity : AppCompatActivity() {
 
     private fun handleCellClick(index: Int) {
         if (index == gameSequence[userStep]) {
-            // ACIERTO: Ahora tiene el mismo ritmo que el patrón (lento y claro)
             playGameAnimation(index, sequenceDelay - 200, Color.parseColor("#4CAF50"))
             userStep++
 
@@ -156,12 +165,11 @@ class JuegoActivity : AppCompatActivity() {
                 tvScore.text = score.toString()
                 setInputsEnabled(false)
                 lifecycleScope.launch {
-                    delay(sequenceDelay) // Espera proporcional antes del nuevo nivel
+                    delay(sequenceDelay)
                     startLevel()
                 }
             }
         } else {
-            // ERROR: Contorno Rojo + Sacudida
             setInputsEnabled(false)
             playErrorAnimation(index)
             lifecycleScope.launch {
@@ -171,25 +179,25 @@ class JuegoActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * ANIMACIÓN MAESTRA: Ahora sostiene el brillo más tiempo
-     */
     private fun playGameAnimation(index: Int, duration: Long, strokeColor: Int) {
         val cell = cells[index]
+        val originalBg = cell.background
 
+        // Creamos el Glow (Borde) manteniendo el color si es el tema colores
         val glowDrawable = GradientDrawable().apply {
             shape = GradientDrawable.RECTANGLE
             cornerRadius = 45f
-            setStroke(14, strokeColor) // Borde grueso y visible
-            setColor(Color.parseColor("#12000000"))
+            setStroke(14, strokeColor)
+            if (theme == "colors" && originalBg is GradientDrawable) {
+                color = originalBg.color
+            } else {
+                setColor(Color.parseColor("#12000000"))
+            }
         }
 
         cell.background = glowDrawable
 
-        // Mantenemos la imagen visible (1f, 1f) el 50% del tiempo de la animación
         val alpha = ObjectAnimator.ofFloat(cell, "alpha", 0f, 1f, 1f, 0f)
-
-        // Mantenemos la escala en su punto máximo también
         val scaleX = ObjectAnimator.ofFloat(cell, "scaleX", 0.7f, 1.05f, 1.05f, 0.8f)
         val scaleY = ObjectAnimator.ofFloat(cell, "scaleY", 0.7f, 1.05f, 1.05f, 0.8f)
 
@@ -200,17 +208,24 @@ class JuegoActivity : AppCompatActivity() {
             start()
         }
 
-        cell.postDelayed({ cell.background = null }, duration)
+        cell.postDelayed({
+            cell.background = if (theme == "colors") originalBg else null
+        }, duration)
     }
 
     private fun playErrorAnimation(index: Int) {
         val cell = cells[index]
+        val originalBg = cell.background
 
         val errorDrawable = GradientDrawable().apply {
             shape = GradientDrawable.RECTANGLE
             cornerRadius = 45f
             setStroke(16, Color.RED)
-            setColor(Color.parseColor("#30FF0000"))
+            if (theme == "colors" && originalBg is GradientDrawable) {
+                color = originalBg.color
+            } else {
+                setColor(Color.parseColor("#30FF0000"))
+            }
         }
         cell.background = errorDrawable
 
