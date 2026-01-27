@@ -25,32 +25,32 @@
         app:layout_constraintVertical_bias="0.562">
 
         <ImageView
-            android:id="@+id/imgTheme1"
+            android:id="@+id/imgAnimals"
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:scaleType="fitCenter"
             android:layout_columnWeight="1"
-            android:contentDescription="Tema 1"
+            android:contentDescription="Animals"
             android:src="@drawable/animals" />
 
         <ImageView
-            android:id="@+id/imgTheme2"
+            android:id="@+id/imgColors"
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:scaleType="fitCenter"
             android:layout_columnWeight="1"
-            android:contentDescription="Tema 2"
+            android:contentDescription="Colors"
             android:src="@drawable/colors" />
 
         <ImageView
-            android:id="@+id/imgTheme3"
+            android:id="@+id/imgNumbers"
             android:layout_width="0dp"
             android:layout_height="80dp"
             android:scaleType="fitCenter"
             android:layout_row="0"
             android:layout_column="2"
             android:layout_columnWeight="1"
-            android:contentDescription="Tema 3"
+            android:contentDescription="Numbers"
             android:src="@drawable/numbers" />
 
     </GridLayout>
