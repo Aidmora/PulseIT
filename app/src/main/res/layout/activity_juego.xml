@@ -31,51 +31,97 @@
             android:rowCount="3">
 
 
-            <!-- 9 CELLS -->
+            <!-- 9 CELLS - CORRECTED -->
 
             <FrameLayout
                 android:id="@+id/cell_0"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_row="0"
-                android:layout_rowWeight="1"
                 android:layout_column="0"
+                android:layout_rowWeight="1"
                 android:layout_columnWeight="1"
-                android:background="@android:color/transparent" />
+                android:layout_margin="4dp"/>
 
             <FrameLayout
                 android:id="@+id/cell_1"
-                style="@style/GameCell" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"/>
 
             <FrameLayout
                 android:id="@+id/cell_2"
-                style="@style/GameCell" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"/>
 
             <FrameLayout
                 android:id="@+id/cell_3"
-                style="@style/GameCell"
-                android:layout_height="15dp" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"/>
 
             <FrameLayout
                 android:id="@+id/cell_4"
-                style="@style/GameCell" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_row="1"
+                android:layout_column="1"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"/>
 
             <FrameLayout
                 android:id="@+id/cell_5"
-                style="@style/GameCell" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_row="1"
+                android:layout_column="2"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"/>
 
             <FrameLayout
                 android:id="@+id/cell_6"
-                style="@style/GameCell"
-                android:layout_height="wrap_content" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_row="2"
+                android:layout_column="0"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"/>
 
             <FrameLayout
                 android:id="@+id/cell_7"
-                style="@style/GameCell" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_row="2"
+                android:layout_column="1"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"/>
 
             <FrameLayout
                 android:id="@+id/cell_8"
-                style="@style/GameCell" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_row="2"
+                android:layout_column="2"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="4dp"/>
 
         </GridLayout>
 
@@ -126,8 +172,8 @@
 
             <TextView
                 android:id="@+id/tvLevel"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:text="Nivel 5"
                 android:textColor="#2D3748"
@@ -142,8 +188,8 @@
 
             <TextView
                 android:id="@+id/tvScore"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:text="1250"
                 android:textColor="#2D3748"
