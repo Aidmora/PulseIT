@@ -6,128 +6,116 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_juego">
 
-    <!-- GAME CARD -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardGame"
+    <!-- Grilla posicionada sobre los botones del fondo -->
+    <LinearLayout
+        android:id="@+id/gameContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="24dp"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="8dp"
-        app:cardBackgroundColor="#22FFFFFF"
+        android:orientation="vertical"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginTop="218dp"
+        android:layout_marginBottom="115dp"
+        android:padding="4dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/cardPlayerInfo"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- 3x3 MATRIX -->
-        <GridLayout
-            android:id="@+id/gameGrid"
+        <!-- Fila 1 -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:columnCount="3"
-            android:layout_marginTop="190dp"
-            android:padding="16dp"
-            android:rowCount="3">
-
-
-            <!-- 9 CELLS - CORRECTED -->
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <FrameLayout
                 android:id="@+id/cell_0"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_row="0"
-                android:layout_column="0"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="4dp"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="24dp"/>
 
             <FrameLayout
                 android:id="@+id/cell_1"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_row="0"
-                android:layout_column="1"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="4dp"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="24dp"/>
 
             <FrameLayout
                 android:id="@+id/cell_2"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_row="0"
-                android:layout_column="2"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="4dp"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="24dp"/>
+
+        </LinearLayout>
+
+        <!-- Fila 2 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
             <FrameLayout
                 android:id="@+id/cell_3"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_row="1"
-                android:layout_column="0"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="4dp"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="24dp"/>
 
             <FrameLayout
                 android:id="@+id/cell_4"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_row="1"
-                android:layout_column="1"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="4dp"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="24dp"/>
 
             <FrameLayout
                 android:id="@+id/cell_5"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_row="1"
-                android:layout_column="2"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="4dp"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="24dp"/>
+
+        </LinearLayout>
+
+        <!-- Fila 3 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
 
             <FrameLayout
                 android:id="@+id/cell_6"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_row="2"
-                android:layout_column="0"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="4dp"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="24dp"/>
 
             <FrameLayout
                 android:id="@+id/cell_7"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_row="2"
-                android:layout_column="1"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="4dp"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="24dp"/>
 
             <FrameLayout
                 android:id="@+id/cell_8"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_row="2"
-                android:layout_column="2"
-                android:layout_rowWeight="1"
-                android:layout_columnWeight="1"
-                android:layout_margin="4dp"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="24dp"/>
 
-        </GridLayout>
+        </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+    </LinearLayout>
 
-    <!-- PLAYER INFO BAR (BOTTOM FIXED) -->
+    <!-- Barra inferior de información -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardPlayerInfo"
         android:layout_width="0dp"
