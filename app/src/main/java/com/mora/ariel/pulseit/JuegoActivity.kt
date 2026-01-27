@@ -31,7 +31,6 @@ class JuegoActivity : AppCompatActivity() {
     private var level = 0
     private val gameSequence = mutableListOf<Int>()
     private var userStep = 0
-    private var isInputBlocked = true
 
     // --- Game Parameters ---
     private var theme: String? = null
@@ -84,6 +83,12 @@ class JuegoActivity : AppCompatActivity() {
         lifecycleScope.launch {
             delay(1000) // Espera inicial para que el usuario se prepare
             startLevel()
+        }
+    }
+
+    private fun setInputsEnabled(enabled: Boolean) {
+        cells.forEach { cell ->
+            cell.isEnabled = enabled
         }
     }
 
@@ -170,15 +175,14 @@ class JuegoActivity : AppCompatActivity() {
     private fun setupClickListeners() {
         cells.forEachIndexed { index, cell ->
             cell.setOnClickListener {
-                if (!isInputBlocked) {
-                    handleCellClick(index)
-                }
+                handleCellClick(index)
             }
         }
     }
 
     private fun startLevel() {
-        isInputBlocked = true
+        setInputsEnabled(false)
+        tvPlayerName.text = "Observa..."
         userStep = 0
         level++
         tvLevel.text = "Nivel $level"
@@ -196,7 +200,8 @@ class JuegoActivity : AppCompatActivity() {
                 highlightCell(index, sequenceDelay / 2) // Ilumina la mitad del tiempo de espera
                 delay(sequenceDelay) // Espera antes de la siguiente
             }
-            isInputBlocked = false // Turno del usuario
+            setInputsEnabled(true) // Turno del usuario
+            tvPlayerName.text = "¡Tu Turno!"
         }
     }
 
@@ -211,7 +216,7 @@ class JuegoActivity : AppCompatActivity() {
                 // Nivel Completado
                 score += 100 // Sumamos 100 puntos por nivel
                 tvScore.text = score.toString()
-                isInputBlocked = true
+                setInputsEnabled(false)
                 lifecycleScope.launch {
                     delay(1000) // Espera de celebración
                     startLevel()
@@ -219,6 +224,7 @@ class JuegoActivity : AppCompatActivity() {
             }
         } else {
             // Fallo -> Game Over
+            setInputsEnabled(false)
             endGame()
         }
     }
@@ -233,6 +239,7 @@ class JuegoActivity : AppCompatActivity() {
     }
 
     private fun endGame() {
+        setInputsEnabled(false)
         val intent = Intent(this, ResultadosActivity::class.java).apply {
             putExtra(EXTRA_SCORE, score)
         }
