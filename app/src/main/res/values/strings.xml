@@ -35,5 +35,6 @@
     <string name="modo_color">Modo de color</string>
     <string name="claro">Claro</string>
     <string name="oscuro">Oscuro</string>
+    <string name="opciones">¿Animales, colores o números?</string>
     <string name="default_web_client_id">815690800009-g4va1qefbf9q2pvdd3uarnujat3pnd69.apps.googleusercontent.com</string>
 </resources>
