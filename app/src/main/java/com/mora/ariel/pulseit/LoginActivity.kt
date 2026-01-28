@@ -1,16 +1,17 @@
-package com.mora.ariel.pulseit // Asegúrate de que este sea tu paquete correcto
+package com.mora.ariel.pulseit
 
 import android.app.Activity
-import com.google.android.gms.common.api.ApiException
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
-import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
@@ -25,11 +26,21 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        auth = FirebaseAuth.getInstance()
+
+        if (auth.currentUser != null) {
+            goToMain()
+            return
+        }
+
+        setContentView(R.layout.activity_login)
+
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val btnGuess = findViewById<Button>(R.id.btnGuess)
+
         btnLogin.setOnClickListener { signInWithGoogle() }
         btnGuess.setOnClickListener { signInAsGuest() }
-        auth = FirebaseAuth.getInstance()
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -44,14 +55,12 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
+                    // Llamamos a guardar y dejamos que esa función maneje el cambio de pantalla
                     saveUserToFirestore(user)
-
-                    // user.uid exists
-                    // user.isAnonymous == true
-
-                    goToMain()
                 } else {
-                    task.exception?.printStackTrace()
+                    Log.e("AUTH", "Error en login anónimo", task.exception)
+                    Toast.makeText(this, "Error de red al entrar como invitado", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
     }
@@ -60,7 +69,7 @@ class LoginActivity : AppCompatActivity() {
         if (user == null) return
 
         val userRef = db.collection("users").document(user.uid)
-        //Campos a capturar
+
         val userData = hashMapOf(
             "uid" to user.uid,
             "nombre" to (user.displayName ?: "Invitado"),
@@ -70,20 +79,22 @@ class LoginActivity : AppCompatActivity() {
             "fechaRegistro" to com.google.firebase.Timestamp.now()
         )
 
-             SetOptions.merge()  //Si el usuario ya existe
-        // actualiza los datos de perfil pero no borra sus puntajes previos
+        // IMPORTANTE: Solo navegamos a la siguiente pantalla DENTRO de los listeners de Firestore
         userRef.set(userData, SetOptions.merge())
             .addOnSuccessListener {
+                Log.d("FIRESTORE", "Datos guardados correctamente")
                 goToMain()
             }
             .addOnFailureListener { e ->
-                e.printStackTrace()
-                // Aunque falle el guardado en DB, podrías dejarlo pasar al juego
+                Log.e("FIRESTORE", "Error al guardar datos: ${e.message}")
+                // Si falla por internet, igual permitimos entrar (opcional)
                 goToMain()
             }
     }
+
     private fun goToMain() {
-        startActivity(Intent(this, EleccionTemaActivity::class.java))
+        val intent = Intent(this, EleccionTemaActivity::class.java)
+        startActivity(intent)
         finish()
     }
 
@@ -95,10 +106,11 @@ class LoginActivity : AppCompatActivity() {
                     val account = task.getResult(ApiException::class.java)
                     firebaseAuthWithGoogle(account.idToken!!)
                 } catch (e: Exception) {
-                    e.printStackTrace()
+                    Log.e("GOOGLE_AUTH", "Error de Google", e)
                 }
             }
         }
+
     fun signInWithGoogle() {
         signInLauncher.launch(googleSignInClient.signInIntent)
     }
@@ -108,14 +120,10 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    saveUserToFirestore(user)
-                    // SUCCESS: user.email, user.uid, user.displayName
+                    saveUserToFirestore(auth.currentUser)
                 } else {
-                    // FAILURE
+                    Log.e("AUTH", "Error con credenciales de Google")
                 }
             }
     }
-
-
 }

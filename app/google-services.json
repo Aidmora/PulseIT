@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "815690800009-qjsn9s8k8ms47kb4oqsgkd2vjqf1c8r7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mora.ariel.pulseit",
+            "certificate_hash": "05169177f58e599370fc13751602b8f7144fd3c8"
+          }
+        },
+        {
           "client_id": "815690800009-g4va1qefbf9q2pvdd3uarnujat3pnd69.apps.googleusercontent.com",
           "client_type": 3
         }
