@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,102 +7,82 @@
     android:layout_height="match_parent"
     android:background="@drawable/conf_partida">
 
-
+    <!-- Título de la pantalla - Ajustado para iniciar dentro del área visual -->
     <ImageView
         android:id="@+id/imgTitle"
-        android:layout_width="280dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="240dp"
+        android:layout_width="260dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="230dp"
         android:src="@drawable/txt_conf_partida"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Etiqueta de Dificultad -->
     <TextView
         android:id="@+id/tvDifficulty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="casual"
-        android:text="Dificultad"
-        android:textSize="18sp"
+        android:text="@string/configura_partida_dificultad"
+        android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imgTitle" />
 
-
+    <!-- Contenedor de Dificultades en Fila (Horizontal) -->
+    <!-- Se usa un ancho de 0dp con márgenes laterales para que se adapte al espacio -->
     <LinearLayout
         android:id="@+id/layoutDifficulty"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvDifficulty">
 
         <ImageView
             android:id="@+id/btnEasy"
             style="@style/OptionButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="4dp"
             android:src="@drawable/easy" />
 
         <ImageView
             android:id="@+id/btnMedium"
             style="@style/OptionButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="4dp"
             android:src="@drawable/medium" />
 
         <ImageView
             android:id="@+id/btnHard"
             style="@style/OptionButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="4dp"
             android:src="@drawable/hard" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvLanguage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="casual"
-        android:text="Idioma"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutDifficulty" />
-
-    <LinearLayout
-        android:id="@+id/layoutLanguage"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvLanguage">
-
-        <ImageView
-            android:id="@+id/btnES"
-            style="@style/OptionButton"
-            android:src="@drawable/es" />
-
-        <ImageView
-            android:id="@+id/btnEN"
-            style="@style/OptionButton"
-            android:src="@drawable/en" />
-    </LinearLayout>
-
+    <!-- Botón de Empezar Juego - Subido un poco para que no se salga de la "carta" -->
     <ImageView
         android:id="@+id/btnEmpezarJuego"
-        android:layout_width="172dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="200dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="180dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="44dp"
+        app:layout_constraintTop_toBottomOf="@id/layoutDifficulty"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/bg_card_green" />
@@ -112,8 +93,9 @@
         android:layout_height="wrap_content"
         android:fontFamily="casual"
         android:text="@string/btn_empezarjuego"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/btnEmpezarJuego"
         app:layout_constraintEnd_toEndOf="@+id/btnEmpezarJuego"
         app:layout_constraintStart_toStartOf="@+id/btnEmpezarJuego"
