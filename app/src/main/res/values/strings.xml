@@ -47,4 +47,15 @@
     <string name="theme_animals">animals</string>
     <string name="theme_numbers">numbers</string>
     <string name="theme_colors">colors</string>
+
+    <string name="nivel">¡Nivel 5 Superado!</string>
+    <string name="player">Jugador 1</string>
+    <string name="btn_play_again">Jugar de nuevo</string>
+    <string name="puntaje">PUNTUACIÓN</string>
+    <string name="nivel_txt">NIVEL</string>
+    <string name="nivel_ct">5</string>
+    <string name="tiempo">TIEMPO</string>
+    <string name="tiempo_ct">02:45</string>
+    <string name="puntaje_ct">15.230</string>
+    <string name="medalla">Medalla</string>
 </resources>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,38 +17,24 @@
         <!-- Subtítulo -->
 
         <!-- Card de Resultado -->
-        <Button
-            android:id="@+id/btnLogout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="40dp"
-            android:text="Cerrar Sesión"
-
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:backgroundTint="#E91E63"
-            app:layout_constraintBottom_toTopOf="@+id/cardResult"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardResult"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
             app:cardCornerRadius="24dp"
             app:cardElevation="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="227dp">
+            app:layout_constraintEnd_toEndOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="533dp"
+                android:layout_height="514dp"
                 android:orientation="vertical"
-                android:padding="32dp">
+                android:padding="32dp"
+                android:background="@drawable/top_gradient_bar">
 
                 <!-- Mensaje de felicitación -->
                 <TextView
@@ -58,9 +43,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:fontFamily="@font/cherry_bomb_one"
-                    android:text="¡Nivel 5 Superado!"
+                    android:text="@string/nivel"
                     android:textColor="#9F7AEA"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:textStyle="bold" />
 
                 <!-- Imagen del jugador con badge -->
@@ -79,13 +64,6 @@
                         app:shapeAppearanceOverlay="@style/CircleImageView" />
 
                     <!-- Badge de medalla -->
-                    <ImageView
-                        android:id="@+id/imgBadge"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="bottom|end"
-                        android:contentDescription="Medalla"
-                        android:src="@drawable/ic_trophy" />
                 </FrameLayout>
 
                 <!-- Nombre del jugador -->
@@ -96,7 +74,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/cherry_bomb_one"
-                    android:text="Jugador 1"
+                    android:text="@string/player"
+
                     android:textColor="#2D3748"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -121,17 +100,17 @@
 
                         <ImageView
                             android:id="@+id/imageView4"
-                            android:layout_width="37dp"
-                            android:layout_height="27dp"
+                            android:layout_width="42dp"
+                            android:layout_height="30dp"
                             app:srcCompat="@drawable/star" />
 
                         <TextView
                             android:layout_width="78dp"
                             android:layout_height="wrap_content"
-                            android:text="PUNTUACIÓN"
+                            android:text="@string/puntaje"
                             android:textAlignment="center"
                             android:textColor="#9F7AEA"
-                            android:textSize="10sp"
+                            android:textSize="11sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -139,8 +118,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="15,230"
-                            android:textColor="#9F7AEA"
+                            android:text="@string/puntaje_ct"
+                            android:textColor="#FFC107"
                             android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -152,7 +131,7 @@
                     <!-- Nivel -->
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="101dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@drawable/bg_button_white"
                         android:gravity="center"
@@ -168,9 +147,9 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="NIVEL"
+                            android:text="@string/nivel_txt"
                             android:textColor="#9F7AEA"
-                            android:textSize="10sp"
+                            android:textSize="12sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -178,7 +157,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="5"
+                            android:text="@string/nivel_ct"
                             android:textColor="#9F7AEA"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -191,7 +170,7 @@
                     <!-- Tiempo -->
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="101dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@drawable/bg_button_white"
                         android:gravity="center"
@@ -200,16 +179,16 @@
 
                         <ImageView
                             android:id="@+id/imageView2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="28dp"
                             app:srcCompat="@drawable/time" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="TIEMPO"
+                            android:text="@string/tiempo"
                             android:textColor="#9F7AEA"
-                            android:textSize="10sp"
+                            android:textSize="12sp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -217,8 +196,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="02:45"
-                            android:textColor="#9F7AEA"
+                            android:text="@string/tiempo_ct"
+                            android:textColor="#E91E63"
                             android:textSize="18sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -232,12 +211,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginTop="20dp"
-                    android:text="Jugar de nuevo"
+                    android:text="@string/btn_play_again"
                     android:textColor="#000000"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     app:backgroundTint="#F4CE36"
                     app:cornerRadius="28dp" />
+
+                <ImageView
+                    android:id="@+id/imgBadge"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="bottom|end"
+                    android:contentDescription="@string/medalla"
+                    android:src="@drawable/ic_trophy" />
 
                 <!-- Botón Cambiar modo -->
 
