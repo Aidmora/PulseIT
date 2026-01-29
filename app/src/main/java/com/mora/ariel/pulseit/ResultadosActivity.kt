@@ -1,69 +1,126 @@
-package com.mora.ariel.pulseit // Asegúrate de que este sea tu paquete correcto
+package com.mora.ariel.pulseit
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlin.io.path.exists
 
 class ResultadosActivity : AppCompatActivity() {
+
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
 
+    // Views
+    private lateinit var tvPlayerName: TextView
+    private lateinit var tvScore: TextView
+    private lateinit var tvLevel: TextView
+    private lateinit var tvTime: TextView
+    private lateinit var tvCongrats: TextView
+    private lateinit var imgPlayer: ImageView
+
+    // Variables que vienen de JuegoActivity
+    private var level: Int = 0
+    private var tiempoTotal: String = "00:00"
+    private var difficulty: String = "normal"
+    private var theme: String = "colors"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_resultados)
 
-        // --- Lógica de navegación para los botones de resultados ---
+        auth = FirebaseAuth.getInstance()
+
+        tvPlayerName = findViewById(R.id.tvPlayerName)
+        tvScore = findViewById(R.id.tvScore)
+        tvLevel = findViewById(R.id.tvLevel)
+        tvTime = findViewById(R.id.tvTime)
+        tvCongrats = findViewById(R.id.tvCongrats)
+        imgPlayer = findViewById(R.id.imgPlayer)
+
         val puntajeObtenido = intent.getIntExtra("extra_score", 0)
+        level = intent.getIntExtra("extra_level", 0)
+        tiempoTotal = intent.getStringExtra("extra_time") ?: "00:00"
+        difficulty = intent.getStringExtra("extra_difficulty") ?: "normal"
+        theme = intent.getStringExtra("extra_theme") ?: "colors"
+
+        tvScore.text = puntajeObtenido.toString()
+        tvLevel.text = level.toString()
+        tvTime.text = tiempoTotal
+        tvCongrats.text = "¡Nivel $level Superado!" // Mensaje dinámico según nivel
+
+        cargarDatosUsuario()
         actualizarPuntaje(puntajeObtenido)
 
-        val btnPlayAgain = findViewById<MaterialButton>(R.id.btnPlayAgain)
-        btnPlayAgain.setOnClickListener {
+        findViewById<MaterialButton>(R.id.btnPlayAgain).setOnClickListener {
             val intent = Intent(this, JuegoActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
-
             finish()
         }
 
-        val btnBackHome = findViewById<MaterialButton>(R.id.btnBackHome)
-        btnBackHome.setOnClickListener {
+        findViewById<MaterialButton>(R.id.btnBackHome).setOnClickListener {
             val intent = Intent(this, EleccionTemaActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
-
             finish()
         }
 
-        val btnChangeMode = findViewById<MaterialButton>(R.id.btnChangeMode)
-        btnChangeMode.setOnClickListener {
-            // Creamos la intención de ir a la pantalla de Configuración de Partida
+        findViewById<MaterialButton>(R.id.btnChangeMode).setOnClickListener {
             val intent = Intent(this, ConfiguracionPartidaActivity::class.java)
-            // Limpiamos la pila hasta la pantalla de configuración
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
-            // Cerramos la pantalla actual de resultados
             finish()
         }
     }
+
+    private fun cargarDatosUsuario() {
+        val user = auth.currentUser ?: return
+
+        tvPlayerName.text = user.displayName ?: "Invitado"
+
+        user.photoUrl?.let { uri ->
+            Glide.with(this)
+                .load(uri)
+                .into(imgPlayer)
+        }
+
+        db.collection("users").document(user.uid)
+            .get()
+            .addOnSuccessListener { doc ->
+                doc.getString("nombre")?.let {
+                    tvPlayerName.text = it
+                }
+            }
+    }
+
     private fun actualizarPuntaje(puntaje: Int) {
         val user = auth.currentUser ?: return
         val userRef = db.collection("users").document(user.uid)
+
         db.runTransaction { transaction ->
             val snapshot = transaction.get(userRef)
+            val nombre = user.displayName ?: "Invitado"
+            val email = user.email ?: "N/A"
+            val fotoUrl = user.photoUrl?.toString() ?: ""
+            val esInvitado = user.isAnonymous
 
             if (!snapshot.exists()) {
                 val data = hashMapOf(
-                    "nombre" to (user.displayName ?: "Invitado"),
+                    "uid" to user.uid,
+                    "nombre" to nombre,
+                    "email" to email,
+                    "fotoUrl" to fotoUrl,
+                    "tipoCuenta" to if (esInvitado) "invitado" else "google",
                     "puntajeMaximo" to puntaje,
-                    "partidasJugadas" to 1
+                    "partidasJugadas" to 1,
+                    "fechaRegistro" to com.google.firebase.Timestamp.now()
                 )
                 transaction.set(userRef, data)
             } else {
@@ -71,13 +128,30 @@ class ResultadosActivity : AppCompatActivity() {
                 if (puntaje > puntajeActual) {
                     transaction.update(userRef, "puntajeMaximo", puntaje)
                 }
-                transaction.update(userRef, "partidasJugadas",
-                    FieldValue.increment(1))
+                transaction.update(userRef, "partidasJugadas", FieldValue.increment(1))
+                transaction.update(userRef, "nombre", nombre)
+                transaction.update(userRef, "fotoUrl", fotoUrl)
+                transaction.update(userRef, "tipoCuenta", if (esInvitado) "invitado" else "google")
             }
         }.addOnSuccessListener {
-            Log.d("Firestore", "Estadísticas actualizadas con éxito")
+            Log.d("Firestore", "Perfil y puntuación actualizados para: ${user.displayName}")
         }.addOnFailureListener { e ->
-            Log.e("Firestore", "Error al actualizar ranking", e)
+            Log.e("Firestore", "Error al actualizar datos", e)
         }
+
+        // Guardamos los datos de la partida dinámica
+        val gameData = hashMapOf(
+            "score" to puntaje,
+            "level" to level,
+            "time" to tiempoTotal,
+            "difficulty" to difficulty,
+            "theme" to theme,
+            "fecha" to com.google.firebase.Timestamp.now()
+        )
+
+        db.collection("users")
+            .document(user.uid)
+            .collection("games")
+            .add(gameData)
     }
 }
