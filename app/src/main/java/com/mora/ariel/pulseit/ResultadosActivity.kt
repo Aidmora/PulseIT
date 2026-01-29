@@ -66,14 +66,14 @@ class ResultadosActivity : AppCompatActivity() {
         cargarDatosUsuario()
         actualizarPuntaje(puntajeObtenido)
 
-        findViewById<MaterialButton>(R.id.btnPlayAgain).setOnClickListener {
+        /*findViewById<MaterialButton>(R.id.btnPlayAgain).setOnClickListener {
             startService(Intent(this, MusicService::class.java))
 
             val intent = Intent(this, JuegoActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             finish()
-        }
+        }*/
 
         findViewById<MaterialButton>(R.id.btnBackHome).setOnClickListener {
             val intent = Intent(this, EleccionTemaActivity::class.java)
@@ -82,12 +82,12 @@ class ResultadosActivity : AppCompatActivity() {
             finish()
         }
 
-        findViewById<MaterialButton>(R.id.btnChangeMode).setOnClickListener {
+        /*findViewById<MaterialButton>(R.id.btnChangeMode).setOnClickListener {
             val intent = Intent(this, ConfiguracionPartidaActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             finish()
-        }
+        }*/
     }
 
     /**
