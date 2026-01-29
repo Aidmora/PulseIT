@@ -26,7 +26,7 @@ class JuegoActivity : AppCompatActivity() {
     private lateinit var tvLevel: TextView
     private lateinit var tvPlayerName: TextView
 
-    // Sistema de Audio (Efectos de sonido)
+    // Sistema de Audio
     private lateinit var soundPool: SoundPool
     private var sPop: Int = 0
     private var sSuccess: Int = 0
@@ -45,12 +45,8 @@ class JuegoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_juego)
-
-        // Recuperar configuración de la partida (Usa constantes de Constants.kt)
         theme = intent.getStringExtra(EXTRA_THEME)
         difficulty = intent.getStringExtra(EXTRA_DIFFICULTY)
-
-        // Calibración de velocidad según la dificultad elegida (Sincronizado con strings.xml)
         sequenceDelay = when (difficulty) {
             getString(R.string.difficulty_easy) -> 1400L
             getString(R.string.difficulty_hard) -> 800L
@@ -60,8 +56,6 @@ class JuegoActivity : AppCompatActivity() {
         tvScore = findViewById(R.id.tvScore)
         tvLevel = findViewById(R.id.tvLevel)
         tvPlayerName = findViewById(R.id.tvPlayerName)
-
-        // Inicialización de la matriz 3x3
         cells = listOf(
             findViewById(R.id.cell_0), findViewById(R.id.cell_1), findViewById(R.id.cell_2),
             findViewById(R.id.cell_3), findViewById(R.id.cell_4), findViewById(R.id.cell_5),
@@ -72,8 +66,6 @@ class JuegoActivity : AppCompatActivity() {
         setupBoard()
         setupClickListeners()
         setInputsEnabled(false)
-
-        // Inicio retardado para dar tiempo al niño a prepararse
         lifecycleScope.launch {
             delay(1000)
             startLevel()
@@ -81,9 +73,6 @@ class JuegoActivity : AppCompatActivity() {
         tiempoInicio = System.currentTimeMillis()
     }
 
-    /**
-     * Inicializa los efectos de sonido con baja latencia para el gameplay.
-     */
     private fun initSoundEffects() {
         val audioAttributes = AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_GAME)
@@ -100,9 +89,6 @@ class JuegoActivity : AppCompatActivity() {
         sError = soundPool.load(this, R.raw.sound_error, 1)
     }
 
-    /**
-     * Configura el aspecto visual de las celdas basado en el tema seleccionado.
-     */
     private fun setupBoard() {
         tvScore.text = score.toString()
         tvLevel.text = getString(R.string.level_prefix, level)
@@ -181,7 +167,6 @@ class JuegoActivity : AppCompatActivity() {
         lifecycleScope.launch {
             delay(800)
             for (index in gameSequence) {
-                // Sonido sincronizado con la animación
                 soundPool.play(sPop, 1f, 1f, 0, 0, 1f)
                 playGameAnimation(index, sequenceDelay - 200, ContextCompat.getColor(this@JuegoActivity, R.color.glow_white))
                 delay(sequenceDelay)
@@ -193,7 +178,6 @@ class JuegoActivity : AppCompatActivity() {
 
     private fun handleCellClick(index: Int) {
         if (index == gameSequence[userStep]) {
-            // Feedback Auditivo y Visual de Acierto
             soundPool.play(sSuccess, 1f, 1f, 0, 0, 1.1f)
             playGameAnimation(index, sequenceDelay - 200, ContextCompat.getColor(this, R.color.glow_success))
             userStep++
@@ -208,7 +192,6 @@ class JuegoActivity : AppCompatActivity() {
                 }
             }
         } else {
-            // Feedback de Error
             soundPool.play(sError, 1f, 1f, 0, 0, 1f)
             setInputsEnabled(false)
             playErrorAnimation(index)

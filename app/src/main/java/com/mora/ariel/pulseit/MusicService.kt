@@ -4,9 +4,6 @@ import android.app.Service
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.IBinder
-/**
- * Servicio encargado de gestionar la música de fondo de forma global.
- */
 class MusicService : Service() {
     private var mediaPlayer: MediaPlayer? = null
 
@@ -15,8 +12,8 @@ class MusicService : Service() {
     override fun onCreate() {
         super.onCreate()
         mediaPlayer = MediaPlayer.create(this, R.raw.bg_music)
-        mediaPlayer?.isLooping = true // Reproducción infinita
-        mediaPlayer?.setVolume(0.5f, 0.5f) // Volumen al 50%
+        mediaPlayer?.isLooping = true
+        mediaPlayer?.setVolume(0.5f, 0.5f)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

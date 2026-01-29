@@ -13,11 +13,7 @@ class ConfiguracionPartidaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_configuracion_partida)
-
-        // Recuperamos el tema seleccionado de la pantalla anterior
         val theme = intent.getStringExtra(EXTRA_THEME) ?: return
-
-        // Referencias a los componentes del Layout (Dificultad)
         val btnEasy = findViewById<ImageView>(R.id.btnEasy)
         val btnMedium = findViewById<ImageView>(R.id.btnMedium)
         val btnHard = findViewById<ImageView>(R.id.btnHard)
@@ -25,7 +21,6 @@ class ConfiguracionPartidaActivity : AppCompatActivity() {
 
         val difficultyButtons = listOf(btnEasy, btnMedium, btnHard)
 
-        // Listeners para la selección de dificultad
         btnEasy.setOnClickListener {
             selectOption(btnEasy, difficultyButtons)
             selectedDifficulty = getString(R.string.difficulty_easy)
@@ -41,7 +36,7 @@ class ConfiguracionPartidaActivity : AppCompatActivity() {
             selectedDifficulty = getString(R.string.difficulty_hard)
         }
 
-        // Lógica del botón para iniciar la partida
+        // Lógica para iniciar el juego
         btnEmpezarJuego.setOnClickListener {
             if (selectedDifficulty != null) {
                 val intent = Intent(this, JuegoActivity::class.java).apply {
@@ -49,16 +44,13 @@ class ConfiguracionPartidaActivity : AppCompatActivity() {
                     putExtra(EXTRA_DIFFICULTY, selectedDifficulty)
                 }
                 startActivity(intent)
+                finish()
             } else {
-                // Mensaje si no se ha elegido dificultad (Actualizado sin mención al idioma)
-                Toast.makeText(this, "¡Selecciona una dificultad para jugar!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "¡Por favor, elige una dificultad!", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    /**
-     * Gestiona el estado visual de selección (isSelected) de los botones
-     */
     private fun selectOption(selected: ImageView, group: List<ImageView>) {
         group.forEach { it.isSelected = false }
         selected.isSelected = true

@@ -26,7 +26,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        // Iniciar el servicio de música global
         val musicIntent = Intent(this, MusicService::class.java)
         startService(musicIntent)
         auth = FirebaseAuth.getInstance()
@@ -79,8 +78,6 @@ class LoginActivity : AppCompatActivity() {
             "tipoCuenta" to if (user.isAnonymous) "invitado" else "google",
             "fechaRegistro" to com.google.firebase.Timestamp.now()
         )
-
-        // IMPORTANTE: Solo navegamos a la siguiente pantalla DENTRO de los listeners de Firestore
         userRef.set(userData, SetOptions.merge())
             .addOnSuccessListener {
                 Log.d("FIRESTORE", "Datos guardados correctamente")
