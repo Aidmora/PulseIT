@@ -11,35 +11,41 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PulseIT">
+        <service
+            android:name=".MusicService"
+            android:enabled="true"
+            android:exported="true"></service>
 
-        <!-- LOGIN -->
         <activity
             android:name=".ConfiguracionPrincipalActivity"
             android:exported="false" />
-
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
-
         <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- PANTALLAS DE JUEGO -->
-        <activity android:name=".ResultadosActivity" android:exported="false" />
-        <activity android:name=".JuegoActivity" android:exported="false" />
-
-        <!-- CONFIGURACIÓN (SIN INTENT FILTER) -->
+        <activity
+            android:name=".ResultadosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".JuegoActivity"
+            android:exported="false" />
         <activity
             android:name=".ConfiguracionPartidaActivity"
             android:exported="false" />
-
-        <activity android:name=".EleccionTemaActivity" android:exported="false" />
-        <activity android:name=".MainActivity" android:exported="false" />
+        <activity
+            android:name=".EleccionTemaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
     </application>
+
 </manifest>

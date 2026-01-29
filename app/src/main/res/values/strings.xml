@@ -37,4 +37,14 @@
     <string name="oscuro">Oscuro</string>
     <string name="opciones">¿Animales, colores o números?</string>
     <string name="default_web_client_id">815690800009-g4va1qefbf9q2pvdd3uarnujat3pnd69.apps.googleusercontent.com</string>
+
+    <string name="observe_text">¡Observa!</string>
+    <string name="your_turn_text">¡Tu Turno!</string>
+    <string name="level_prefix">Nivel %d</string>
+    <string name="difficulty_easy">easy</string>
+    <string name="difficulty_medium">medium</string>
+    <string name="difficulty_hard">hard</string>
+    <string name="theme_animals">animals</string>
+    <string name="theme_numbers">numbers</string>
+    <string name="theme_colors">colors</string>
 </resources>

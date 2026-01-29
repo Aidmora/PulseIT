@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Colores de la Matriz de Juego -->
+    <color name="game_tile_1">#EF5350</color>
+    <color name="game_tile_2">#42A5F5</color>
+    <color name="game_tile_3">#66BB6A</color>
+    <color name="game_tile_4">#FFEE58</color>
+    <color name="game_tile_5">#FFA726</color>
+    <color name="game_tile_6">#AB47BC</color>
+    <color name="game_tile_7">#26A69A</color>
+    <color name="game_tile_8">#EC407A</color>
+    <color name="game_tile_9">#78909C</color>
+
+    <!-- Colores de Feedback Visual -->
+    <color name="glow_white">#95FFFFFF</color>
+    <color name="glow_success">#4CAF50</color>
+    <color name="glow_error">#F44336</color>
+    <color name="overlay_dark">#12000000</color>
+    <color name="overlay_error">#30FF0000</color>
 </resources>

@@ -1,6 +1,7 @@
 package com.mora.ariel.pulseit
 
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -25,6 +26,8 @@ class ResultadosActivity : AppCompatActivity() {
     private lateinit var tvCongrats: TextView
     private lateinit var imgPlayer: ImageView
 
+    private var finalPlayer: MediaPlayer? = null
+
     // Variables que vienen de JuegoActivity
     private var level: Int = 0
     private var tiempoTotal: String = "00:00"
@@ -34,6 +37,9 @@ class ResultadosActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resultados)
+
+
+        stopService(Intent(this, MusicService::class.java))
 
         auth = FirebaseAuth.getInstance()
 
@@ -53,12 +59,16 @@ class ResultadosActivity : AppCompatActivity() {
         tvScore.text = puntajeObtenido.toString()
         tvLevel.text = level.toString()
         tvTime.text = tiempoTotal
-        tvCongrats.text = "¡Nivel $level Superado!" // Mensaje dinámico según nivel
+        tvCongrats.text = "¡Nivel $level Superado!"
+        //Reproducir sonido
+        playFinalSound()
 
         cargarDatosUsuario()
         actualizarPuntaje(puntajeObtenido)
 
         findViewById<MaterialButton>(R.id.btnPlayAgain).setOnClickListener {
+            startService(Intent(this, MusicService::class.java))
+
             val intent = Intent(this, JuegoActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
@@ -80,14 +90,31 @@ class ResultadosActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Reproduce el sonido de finalización
+     */
+    private fun playFinalSound() {
+        try {
+            finalPlayer = MediaPlayer.create(this, R.raw.sound_final)
+            finalPlayer?.start()
+            // Liberar memoria automáticamente al terminar
+            finalPlayer?.setOnCompletionListener { mp ->
+                mp.release()
+                finalPlayer = null
+            }
+        } catch (e: Exception) {
+            Log.e("Audio", "Error al reproducir sound_final", e)
+        }
+    }
+
     private fun cargarDatosUsuario() {
         val user = auth.currentUser ?: return
-
         tvPlayerName.text = user.displayName ?: "Invitado"
 
         user.photoUrl?.let { uri ->
             Glide.with(this)
                 .load(uri)
+                .circleCrop() // Foto circular para mejor estética
                 .into(imgPlayer)
         }
 
@@ -134,12 +161,11 @@ class ResultadosActivity : AppCompatActivity() {
                 transaction.update(userRef, "tipoCuenta", if (esInvitado) "invitado" else "google")
             }
         }.addOnSuccessListener {
-            Log.d("Firestore", "Perfil y puntuación actualizados para: ${user.displayName}")
+            Log.d("Firestore", "Perfil y puntuación actualizados")
         }.addOnFailureListener { e ->
             Log.e("Firestore", "Error al actualizar datos", e)
         }
 
-        // Guardamos los datos de la partida dinámica
         val gameData = hashMapOf(
             "score" to puntaje,
             "level" to level,
@@ -149,9 +175,13 @@ class ResultadosActivity : AppCompatActivity() {
             "fecha" to com.google.firebase.Timestamp.now()
         )
 
-        db.collection("users")
-            .document(user.uid)
-            .collection("games")
-            .add(gameData)
+        db.collection("users").document(user.uid).collection("games").add(gameData)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Liberar recursos si la actividad se cierra antes de que el sonido termine
+        finalPlayer?.release()
+        finalPlayer = null
     }
 }

@@ -5,6 +5,8 @@ import android.animation.ObjectAnimator
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.media.AudioAttributes
+import android.media.SoundPool
 import android.os.Bundle
 import android.view.Gravity
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -12,6 +14,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -22,31 +25,35 @@ class JuegoActivity : AppCompatActivity() {
     private lateinit var tvScore: TextView
     private lateinit var tvLevel: TextView
     private lateinit var tvPlayerName: TextView
+
+    // Sistema de Audio (Efectos de sonido)
+    private lateinit var soundPool: SoundPool
+    private var sPop: Int = 0
+    private var sSuccess: Int = 0
+    private var sError: Int = 0
+
+    // Variables de estado del juego
     private var tiempoInicio: Long = 0L
-    private var tiempoTotal: String = "00:00"
     private var score = 0
     private var level = 0
     private val gameSequence = mutableListOf<Int>()
     private var userStep = 0
     private var theme: String? = null
     private var difficulty: String? = null
-    private var sequenceDelay = 1000L
-
-    companion object {
-        const val EXTRA_SCORE = "extra_score"
-    }
+    private var sequenceDelay = 1100L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_juego)
 
+        // Recuperar configuración de la partida (Usa constantes de Constants.kt)
         theme = intent.getStringExtra(EXTRA_THEME)
         difficulty = intent.getStringExtra(EXTRA_DIFFICULTY)
 
-        // Calibración de ritmo por dificultad
+        // Calibración de velocidad según la dificultad elegida (Sincronizado con strings.xml)
         sequenceDelay = when (difficulty) {
-            "easy" -> 1400L
-            "hard" -> 800L
+            getString(R.string.difficulty_easy) -> 1400L
+            getString(R.string.difficulty_hard) -> 800L
             else -> 1100L
         }
 
@@ -54,16 +61,19 @@ class JuegoActivity : AppCompatActivity() {
         tvLevel = findViewById(R.id.tvLevel)
         tvPlayerName = findViewById(R.id.tvPlayerName)
 
+        // Inicialización de la matriz 3x3
         cells = listOf(
             findViewById(R.id.cell_0), findViewById(R.id.cell_1), findViewById(R.id.cell_2),
             findViewById(R.id.cell_3), findViewById(R.id.cell_4), findViewById(R.id.cell_5),
             findViewById(R.id.cell_6), findViewById(R.id.cell_7), findViewById(R.id.cell_8)
         )
 
+        initSoundEffects()
         setupBoard()
         setupClickListeners()
         setInputsEnabled(false)
 
+        // Inicio retardado para dar tiempo al niño a prepararse
         lifecycleScope.launch {
             delay(1000)
             startLevel()
@@ -71,19 +81,41 @@ class JuegoActivity : AppCompatActivity() {
         tiempoInicio = System.currentTimeMillis()
     }
 
+    /**
+     * Inicializa los efectos de sonido con baja latencia para el gameplay.
+     */
+    private fun initSoundEffects() {
+        val audioAttributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_GAME)
+            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .build()
+
+        soundPool = SoundPool.Builder()
+            .setMaxStreams(5)
+            .setAudioAttributes(audioAttributes)
+            .build()
+
+        sPop = soundPool.load(this, R.raw.sound_pop, 1)
+        sSuccess = soundPool.load(this, R.raw.sound_success, 1)
+        sError = soundPool.load(this, R.raw.sound_error, 1)
+    }
+
+    /**
+     * Configura el aspecto visual de las celdas basado en el tema seleccionado.
+     */
     private fun setupBoard() {
         tvScore.text = score.toString()
-        tvLevel.text = "Nivel $level"
+        tvLevel.text = getString(R.string.level_prefix, level)
 
         cells.forEachIndexed { index, cell ->
             cell.removeAllViews()
-            cell.alpha = 0f // Invisible al inicio (Memoria)
+            cell.alpha = 0f
             cell.background = null
 
             when (theme) {
-                "animals" -> setupAnimalsInCell(index, cell)
-                "numbers" -> setupNumbersInCell(index, cell)
-                "colors" -> setupColorsInCell(index, cell)
+                getString(R.string.theme_animals) -> setupAnimalsInCell(index, cell)
+                getString(R.string.theme_numbers) -> setupNumbersInCell(index, cell)
+                getString(R.string.theme_colors) -> setupColorsInCell(index, cell)
                 else -> setupColorsInCell(index, cell)
             }
         }
@@ -107,7 +139,7 @@ class JuegoActivity : AppCompatActivity() {
         val txt = TextView(this).apply {
             text = (index + 1).toString()
             textSize = 42f
-            setTextColor(Color.BLACK)
+            setTextColor(ContextCompat.getColor(context, R.color.black))
             gravity = Gravity.CENTER
             setTypeface(null, android.graphics.Typeface.BOLD)
         }
@@ -115,15 +147,16 @@ class JuegoActivity : AppCompatActivity() {
     }
 
     private fun setupColorsInCell(index: Int, cell: FrameLayout) {
-        val colorStrs = listOf(
-            "#EF5350", "#42A5F5", "#66BB6A",
-            "#FFEE58", "#FFA726", "#AB47BC",
-            "#26A69A", "#EC407A", "#78909C"
+        // Usa los colores definidos en colors.xml
+        val colors = listOf(
+            R.color.game_tile_1, R.color.game_tile_2, R.color.game_tile_3,
+            R.color.game_tile_4, R.color.game_tile_5, R.color.game_tile_6,
+            R.color.game_tile_7, R.color.game_tile_8, R.color.game_tile_9
         )
         val gd = GradientDrawable().apply {
             shape = GradientDrawable.RECTANGLE
             cornerRadius = 45f
-            setColor(Color.parseColor(colorStrs[index % colorStrs.size]))
+            setColor(ContextCompat.getColor(this@JuegoActivity, colors[index % colors.size]))
         }
         cell.background = gd
     }
@@ -136,10 +169,10 @@ class JuegoActivity : AppCompatActivity() {
 
     private fun startLevel() {
         setInputsEnabled(false)
-        tvPlayerName.text = "¡Observa!"
+        tvPlayerName.text = getString(R.string.observe_text)
         userStep = 0
         level++
-        tvLevel.text = "Nivel $level"
+        tvLevel.text = getString(R.string.level_prefix, level)
         gameSequence.add((0..8).random())
         showSequence()
     }
@@ -148,17 +181,21 @@ class JuegoActivity : AppCompatActivity() {
         lifecycleScope.launch {
             delay(800)
             for (index in gameSequence) {
-                playGameAnimation(index, sequenceDelay - 200, Color.parseColor("#95FFFFFF"))
+                // Sonido sincronizado con la animación
+                soundPool.play(sPop, 1f, 1f, 0, 0, 1f)
+                playGameAnimation(index, sequenceDelay - 200, ContextCompat.getColor(this@JuegoActivity, R.color.glow_white))
                 delay(sequenceDelay)
             }
             setInputsEnabled(true)
-            tvPlayerName.text = "¡Tu Turno!"
+            tvPlayerName.text = getString(R.string.your_turn_text)
         }
     }
 
     private fun handleCellClick(index: Int) {
         if (index == gameSequence[userStep]) {
-            playGameAnimation(index, sequenceDelay - 200, Color.parseColor("#4CAF50"))
+            // Feedback Auditivo y Visual de Acierto
+            soundPool.play(sSuccess, 1f, 1f, 0, 0, 1.1f)
+            playGameAnimation(index, sequenceDelay - 200, ContextCompat.getColor(this, R.color.glow_success))
             userStep++
 
             if (userStep == gameSequence.size) {
@@ -171,6 +208,8 @@ class JuegoActivity : AppCompatActivity() {
                 }
             }
         } else {
+            // Feedback de Error
+            soundPool.play(sError, 1f, 1f, 0, 0, 1f)
             setInputsEnabled(false)
             playErrorAnimation(index)
             lifecycleScope.launch {
@@ -184,18 +223,16 @@ class JuegoActivity : AppCompatActivity() {
         val cell = cells[index]
         val originalBg = cell.background
 
-        // Creamos el Glow (Borde) manteniendo el color si es el tema colores
         val glowDrawable = GradientDrawable().apply {
             shape = GradientDrawable.RECTANGLE
             cornerRadius = 45f
             setStroke(14, strokeColor)
-            if (theme == "colors" && originalBg is GradientDrawable) {
-                color = originalBg.color
+            if (theme == getString(R.string.theme_colors) && originalBg is GradientDrawable) {
+                color = (originalBg as GradientDrawable).color
             } else {
-                setColor(Color.parseColor("#12000000"))
+                setColor(ContextCompat.getColor(this@JuegoActivity, R.color.overlay_dark))
             }
         }
-
         cell.background = glowDrawable
 
         val alpha = ObjectAnimator.ofFloat(cell, "alpha", 0f, 1f, 1f, 0f)
@@ -210,7 +247,7 @@ class JuegoActivity : AppCompatActivity() {
         }
 
         cell.postDelayed({
-            cell.background = if (theme == "colors") originalBg else null
+            cell.background = if (theme == getString(R.string.theme_colors)) originalBg else null
         }, duration)
     }
 
@@ -221,11 +258,11 @@ class JuegoActivity : AppCompatActivity() {
         val errorDrawable = GradientDrawable().apply {
             shape = GradientDrawable.RECTANGLE
             cornerRadius = 45f
-            setStroke(16, Color.RED)
-            if (theme == "colors" && originalBg is GradientDrawable) {
-                color = originalBg.color
+            setStroke(16, ContextCompat.getColor(this@JuegoActivity, R.color.glow_error))
+            if (theme == getString(R.string.theme_colors) && originalBg is GradientDrawable) {
+                color = (originalBg as GradientDrawable).color
             } else {
-                setColor(Color.parseColor("#30FF0000"))
+                setColor(ContextCompat.getColor(this@JuegoActivity, R.color.overlay_error))
             }
         }
         cell.background = errorDrawable
@@ -245,22 +282,23 @@ class JuegoActivity : AppCompatActivity() {
     }
 
     private fun endGame() {
-        val tiempoFin = System.currentTimeMillis()
-        val totalMs = tiempoFin - tiempoInicio
-        val totalSegs = totalMs / 1000
-        val minutos = totalSegs / 60
-        val segundos = totalSegs % 60
-        tiempoTotal = String.format("%02d:%02d", minutos, segundos)
+        val totalSegs = (System.currentTimeMillis() - tiempoInicio) / 1000
+        val tiempoTotalStr = String.format("%02d:%02d", totalSegs / 60, totalSegs % 60)
 
         val intent = Intent(this, ResultadosActivity::class.java).apply {
-            putExtra("extra_score", score)
+            putExtra(EXTRA_SCORE, score)
+            putExtra(EXTRA_THEME, theme)
+            putExtra(EXTRA_DIFFICULTY, difficulty)
+            // Extras dinámicos para la pantalla final
             putExtra("extra_level", level)
-            putExtra("extra_time", tiempoTotal)
-            putExtra("extra_difficulty", difficulty)
-            putExtra("extra_theme", theme)
+            putExtra("extra_time", tiempoTotalStr)
         }
         startActivity(intent)
         finish()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        soundPool.release()
+    }
 }

@@ -26,14 +26,15 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
+        // Iniciar el servicio de música global
+        val musicIntent = Intent(this, MusicService::class.java)
+        startService(musicIntent)
         auth = FirebaseAuth.getInstance()
 
         if (auth.currentUser != null) {
             goToMain()
             return
         }
-
         setContentView(R.layout.activity_login)
 
         val btnLogin = findViewById<Button>(R.id.btnLogin)
