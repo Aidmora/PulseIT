@@ -22,12 +22,12 @@ class JuegoActivity : AppCompatActivity() {
     private lateinit var tvScore: TextView
     private lateinit var tvLevel: TextView
     private lateinit var tvPlayerName: TextView
-
+    private var tiempoInicio: Long = 0L
+    private var tiempoTotal: String = "00:00"
     private var score = 0
     private var level = 0
     private val gameSequence = mutableListOf<Int>()
     private var userStep = 0
-
     private var theme: String? = null
     private var difficulty: String? = null
     private var sequenceDelay = 1000L
@@ -68,6 +68,7 @@ class JuegoActivity : AppCompatActivity() {
             delay(1000)
             startLevel()
         }
+        tiempoInicio = System.currentTimeMillis()
     }
 
     private fun setupBoard() {
@@ -244,10 +245,22 @@ class JuegoActivity : AppCompatActivity() {
     }
 
     private fun endGame() {
+        val tiempoFin = System.currentTimeMillis()
+        val totalMs = tiempoFin - tiempoInicio
+        val totalSegs = totalMs / 1000
+        val minutos = totalSegs / 60
+        val segundos = totalSegs % 60
+        tiempoTotal = String.format("%02d:%02d", minutos, segundos)
+
         val intent = Intent(this, ResultadosActivity::class.java).apply {
             putExtra("extra_score", score)
+            putExtra("extra_level", level)
+            putExtra("extra_time", tiempoTotal)
+            putExtra("extra_difficulty", difficulty)
+            putExtra("extra_theme", theme)
         }
         startActivity(intent)
         finish()
     }
+
 }

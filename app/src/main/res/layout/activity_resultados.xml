@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_pulseit_degradado"
+    android:background="@drawable/conf_partida"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,48 +14,23 @@
         android:padding="24dp">
 
         <!-- Título -->
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
-            android:fontFamily="sans-serif-medium"
-            android:text="PULSE IT"
-            android:textColor="#2D3748"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Subtítulo -->
-        <TextView
-            android:id="@+id/tvEdition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Edición Animal"
-            android:textColor="#718096"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
         <!-- Card de Resultado -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardResult"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
             app:cardCornerRadius="24dp"
             app:cardElevation="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvEdition">
+            tools:layout_editor_absoluteY="227dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="606dp"
                 android:orientation="vertical"
                 android:padding="32dp">
 
@@ -64,6 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:fontFamily="@font/cherry_bomb_one"
                     android:text="¡Nivel 5 Superado!"
                     android:textColor="#9F7AEA"
                     android:textSize="20sp"
@@ -90,8 +67,8 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_gravity="bottom|end"
-                        android:src="@drawable/ic_trophy"
-                        android:contentDescription="Medalla" />
+                        android:contentDescription="Medalla"
+                        android:src="@drawable/ic_trophy" />
                 </FrameLayout>
 
                 <!-- Nombre del jugador -->
@@ -101,6 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="16dp"
+                    android:fontFamily="@font/cherry_bomb_one"
                     android:text="Jugador 1"
                     android:textColor="#2D3748"
                     android:textSize="18sp"
