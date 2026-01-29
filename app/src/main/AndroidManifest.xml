@@ -15,10 +15,6 @@
             android:name=".MusicService"
             android:enabled="true"
             android:exported="true"></service>
-
-        <activity
-            android:name=".ConfiguracionPrincipalActivity"
-            android:exported="false" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
