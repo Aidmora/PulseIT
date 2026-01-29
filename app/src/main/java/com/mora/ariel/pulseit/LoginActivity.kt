@@ -25,15 +25,10 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
         val musicIntent = Intent(this, MusicService::class.java)
         startService(musicIntent)
-        auth = FirebaseAuth.getInstance()
 
-        if (auth.currentUser != null) {
-            goToMain()
-            return
-        }
+        auth = FirebaseAuth.getInstance()
         setContentView(R.layout.activity_login)
 
         val btnLogin = findViewById<Button>(R.id.btnLogin)
@@ -41,7 +36,6 @@ class LoginActivity : AppCompatActivity() {
 
         btnLogin.setOnClickListener { signInWithGoogle() }
         btnGuess.setOnClickListener { signInAsGuest() }
-
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -50,17 +44,29 @@ class LoginActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
     }
 
+    override fun onStart() {
+        super.onStart()
+        val forceLogin = intent.getBooleanExtra("force_login", false)
+        val currentUser = auth.currentUser
+        if (forceLogin) {
+            intent.putExtra("force_login", false)
+            return
+        }
+
+        if (currentUser != null && !currentUser.isAnonymous) {
+            goToMain()
+        }
+    }
+
     private fun signInAsGuest() {
         auth.signInAnonymously()
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
-                    // Llamamos a guardar y dejamos que esa función maneje el cambio de pantalla
                     saveUserToFirestore(user)
                 } else {
                     Log.e("AUTH", "Error en login anónimo", task.exception)
-                    Toast.makeText(this, "Error de red al entrar como invitado", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(this, "Error de red al entrar como invitado", Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -85,13 +91,14 @@ class LoginActivity : AppCompatActivity() {
             }
             .addOnFailureListener { e ->
                 Log.e("FIRESTORE", "Error al guardar datos: ${e.message}")
-                // Si falla por internet, igual permitimos entrar (opcional)
                 goToMain()
             }
     }
 
     private fun goToMain() {
         val intent = Intent(this, EleccionTemaActivity::class.java)
+        // Usamos FLAGS para que al entrar al juego, el Login se borre de la memoria
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
     }
