@@ -18,6 +18,23 @@
         <!-- Subtítulo -->
 
         <!-- Card de Resultado -->
+        <Button
+            android:id="@+id/btnLogout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="40dp"
+            android:text="Cerrar Sesión"
+
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="#E91E63"
+            app:layout_constraintBottom_toTopOf="@+id/cardResult"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cardResult"
             android:layout_width="0dp"
@@ -30,7 +47,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="606dp"
+                android:layout_height="533dp"
                 android:orientation="vertical"
                 android:padding="32dp">
 
@@ -102,10 +119,17 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
+                        <ImageView
+                            android:id="@+id/imageView4"
+                            android:layout_width="37dp"
+                            android:layout_height="27dp"
+                            app:srcCompat="@drawable/star" />
+
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="78dp"
                             android:layout_height="wrap_content"
                             android:text="PUNTUACIÓN"
+                            android:textAlignment="center"
                             android:textColor="#9F7AEA"
                             android:textSize="10sp"
                             android:textStyle="bold" />
@@ -128,12 +152,18 @@
                     <!-- Nivel -->
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="101dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_button_white"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="16dp">
+
+                        <ImageView
+                            android:id="@+id/imageView3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/trophy" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -161,12 +191,18 @@
                     <!-- Tiempo -->
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="101dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_button_white"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="16dp">
+
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/time" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -189,43 +225,21 @@
                 </LinearLayout>
 
                 <!-- Botón Jugar de nuevo -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnPlayAgain"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="24dp"
-                    android:text="Jugar de nuevo"
-                    android:textColor="#2D3748"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:backgroundTint="#B8E5C8"
-                    app:cornerRadius="28dp" />
 
                 <!-- Botón Volver al inicio -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnBackHome"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
-                    android:layout_marginTop="12dp"
-                    android:text="Volver al inicio"
-                    android:textColor="#2D3748"
+                    android:layout_marginTop="20dp"
+                    android:text="Jugar de nuevo"
+                    android:textColor="#000000"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    app:backgroundTint="#A0D8E8"
+                    app:backgroundTint="#F4CE36"
                     app:cornerRadius="28dp" />
 
                 <!-- Botón Cambiar modo -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnChangeMode"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="12dp"
-                    android:text="Cambiar modo"
-                    android:textColor="#2D3748"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:backgroundTint="#E8C8E8"
-                    app:cornerRadius="28dp" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
